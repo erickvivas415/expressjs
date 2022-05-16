@@ -7,7 +7,8 @@ const app = express();
 const port = 3000;
 
 // var item = ""; only pass one item
-var items = []; // An array allow us to pass multiple items
+let items = []; // An array allow us to pass multiple items
+let workItems = [];
 
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
@@ -31,16 +32,25 @@ console.log(today.toLocaleDateString("en-US", options));
     var day = today.toLocaleDateString("en-US", options);
 
     console.log(items);
-    res.render("list", {kindOfday: day, newListItems: items} );
+    res.render("list", {listTitle: day, newListItems: items} );
         //res.sendFile(__dirname + "/index.html");
 });
 
 app.post('/', function(req, res) {
-    var item = req.body.newItem;
+    console.log(req.body.list);
 
-    items.push(item);
+    let item = req.body.newItem;
+    if (req.body.list === "Work") {
+        workItems.push(item);
+        res.redirect("/work");
+    } else {
+        items.push(item);
+        res.redirect("/");
+    }
+});
 
-    res.redirect("/");
+app.get('/work', function(req, res) {
+    res.render("list", {listTitle: "Work", newListItems: workItems})
 });
 
 
