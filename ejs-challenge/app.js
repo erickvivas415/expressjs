@@ -12,6 +12,13 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
+app.get('/', (req, res) => {
+  res.render("home", {startingContent: homeStartingContent});
+  
+
+});
+
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
